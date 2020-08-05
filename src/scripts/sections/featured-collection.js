@@ -22,7 +22,7 @@ register("featured-collection", {
   },
 
   onLoad: function() {
-    new Swiper(".swiper-container", {
+    this.swiper = new Swiper(".swiper-container", {
       slidesPerView: 4,
       slidesPerGroup: 4,
       spaceBetween: 22,
@@ -58,65 +58,77 @@ register("featured-collection", {
 
     const buttons = document.querySelectorAll("#add-to-cart");
 
-    [...buttons].forEach(button => {
-      button.addEventListener("click", event => {
-        event.stopPropagation();
-        event.preventDefault();
+    this.add2CartButtons = [...buttons];
 
-        const variantId = button.dataset.variantId;
+    this.add2CartHandler = function add2CartHandler(event) {
+      event.stopPropagation();
+      event.preventDefault();
 
-        const cartText = button.querySelector(".add-to-cart-text");
-        const cartLoader = button.querySelector(".add-to-cart-loader");
+      const variantId = button.dataset.variantId;
 
-        cartText ? cartText.classList.add("hidden") : null;
-        cartLoader ? cartLoader.classList.remove("hidden") : null;
+      const cartText = button.querySelector(".add-to-cart-text");
+      const cartLoader = button.querySelector(".add-to-cart-loader");
 
-        fetch("/cart/add.js", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            items: [
-              {
-                quantity: 1,
-                id: variantId
-              }
-            ]
-          })
+      cartText ? cartText.classList.add("hidden") : null;
+      cartLoader ? cartLoader.classList.remove("hidden") : null;
+
+      fetch("/cart/add.js", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          items: [
+            {
+              quantity: 1,
+              id: variantId
+            }
+          ]
         })
-          .then(resp => {
-            if (resp.ok) {
-              return resp.json();
-            } else {
-              throw Error("Adding to cart failed!");
-            }
-          })
-          .then(resp => {
-            const cartItemCount = document.querySelector("#cart-item-count");
+      })
+        .then(resp => {
+          if (resp.ok) {
+            return resp.json();
+          } else {
+            throw Error("Adding to cart failed!");
+          }
+        })
+        .then(resp => {
+          const cartItemCount = document.querySelector("#cart-item-count");
 
-            if (cartItemCount) {
-              const oldCartCount = Number(cartItemCount.innerText);
-              cartItemCount.innerText = oldCartCount + 1;
-            }
+          if (cartItemCount) {
+            const oldCartCount = Number(cartItemCount.innerText);
+            cartItemCount.innerText = oldCartCount + 1;
+          }
 
-            cartText.innerText = "Thank You!";
-            cartLoader.classList.add("hidden");
-            cartText.classList.remove("hidden");
-            setTimeout(() => {
-              cartText.innerText = "Add to cart";
-            }, 3500);
-          })
-          .catch(err => {
-            console.error("[ERROR]:", err);
-            cartText.innerText = "Operation Failed!";
-            cartLoader.classList.add("hidden");
-            cartText.classList.remove("hidden");
-            setTimeout(() => {
-              cartText.innerText = "Add to cart";
-            }, 3500);
-          });
-      });
+          cartText.innerText = "Thank You!";
+          cartLoader.classList.add("hidden");
+          cartText.classList.remove("hidden");
+          setTimeout(() => {
+            cartText.innerText = "Add to cart";
+          }, 3500);
+        })
+        .catch(err => {
+          console.error("[ERROR]:", err);
+          cartText.innerText = "Operation Failed!";
+          cartLoader.classList.add("hidden");
+          cartText.classList.remove("hidden");
+          setTimeout(() => {
+            cartText.innerText = "Add to cart";
+          }, 3500);
+        });
+    };
+
+    add2CartButtons.forEach(button => {
+      button.addEventListener("click", this.add2CartHandler);
+    });
+  },
+
+  onUnload: function() {
+    // Do something when a section instance is unloaded
+    this.swiper.destroy();
+    add2CartButtons.forEach(button => {
+      button.removeEventListener("click", this.add2CartHandler);
     });
   },
 
