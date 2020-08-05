@@ -58,75 +58,72 @@ register("featured-collection", {
 
     const buttons = document.querySelectorAll("#add-to-cart");
 
-    this.add2CartButtons = [...buttons];
+    [...buttons].forEach(button =>
+      button.addEventListener("click", function add2CartHandler(event) {
+        event.stopPropagation();
+        event.preventDefault();
 
-    this.add2CartHandler = function add2CartHandler(event) {
-      event.stopPropagation();
-      event.preventDefault();
+        const button = event.target;
 
-      const button = event.target;
+        const variantId = button.dataset.variantId;
 
-      const variantId = button.dataset.variantId;
+        const cartText = button.querySelector(".add-to-cart-text");
+        const cartLoader = button.querySelector(".add-to-cart-loader");
 
-      const cartText = button.querySelector(".add-to-cart-text");
-      const cartLoader = button.querySelector(".add-to-cart-loader");
+        cartText ? cartText.classList.add("hidden") : null;
+        cartLoader ? cartLoader.classList.remove("hidden") : null;
 
-      cartText ? cartText.classList.add("hidden") : null;
-      cartLoader ? cartLoader.classList.remove("hidden") : null;
-
-      fetch("/cart/add.js", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          items: [
-            {
-              quantity: 1,
-              id: variantId
+        fetch("/cart/add.js", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            items: [
+              {
+                quantity: 1,
+                id: variantId
+              }
+            ]
+          })
+        })
+          .then(resp => {
+            if (resp.ok) {
+              return resp.json();
+            } else {
+              throw Error("Adding to cart failed!");
             }
-          ]
-        })
+          })
+          .then(resp => {
+            const cartItemCount = document.querySelector("#cart-item-count");
+
+            if (cartItemCount) {
+              const oldCartCount = Number(cartItemCount.innerText);
+              cartItemCount.innerText = oldCartCount + 1;
+            }
+
+            cartText.innerText = "Thank You!";
+            cartLoader.classList.add("hidden");
+            cartText.classList.remove("hidden");
+            setTimeout(() => {
+              cartText.innerText = "Add to cart";
+            }, 3500);
+          })
+          .catch(err => {
+            console.error("[ERROR]:", err);
+            cartText.innerText = "Operation Failed!";
+            cartLoader.classList.add("hidden");
+            cartText.classList.remove("hidden");
+            setTimeout(() => {
+              cartText.innerText = "Add to cart";
+            }, 3500);
+          });
       })
-        .then(resp => {
-          if (resp.ok) {
-            return resp.json();
-          } else {
-            throw Error("Adding to cart failed!");
-          }
-        })
-        .then(resp => {
-          const cartItemCount = document.querySelector("#cart-item-count");
-
-          if (cartItemCount) {
-            const oldCartCount = Number(cartItemCount.innerText);
-            cartItemCount.innerText = oldCartCount + 1;
-          }
-
-          cartText.innerText = "Thank You!";
-          cartLoader.classList.add("hidden");
-          cartText.classList.remove("hidden");
-          setTimeout(() => {
-            cartText.innerText = "Add to cart";
-          }, 3500);
-        })
-        .catch(err => {
-          console.error("[ERROR]:", err);
-          cartText.innerText = "Operation Failed!";
-          cartLoader.classList.add("hidden");
-          cartText.classList.remove("hidden");
-          setTimeout(() => {
-            cartText.innerText = "Add to cart";
-          }, 3500);
-        });
-    };
-
-    this.add2CartButtons.forEach(button => button.addEventListener("click", this.add2CartHandler));
+    );
   },
 
   onUnload: function() {
     this.swiper.destroy();
-    this.add2CartButtons.forEach(button => button.removeEventListener("click", this.add2CartHandler));
   },
 
   publicMethod() {
