@@ -57,13 +57,12 @@ register("featured-collection", {
     });
 
     const buttons = document.querySelectorAll("#add-to-cart");
-
     this.add2CartHandler = function (event) {
       event.stopPropagation();
       event.preventDefault();
 
+      const button = this;
       const variantId = button.dataset.variantId;
-
       const cartText = button.querySelector(".add-to-cart-text");
       const cartLoader = button.querySelector(".add-to-cart-loader");
 
@@ -117,13 +116,13 @@ register("featured-collection", {
         });
     };
 
-    [...buttons].forEach(button =>
-      button.addEventListener("click", this.add2CartHandler)
-    );
+    this.add2CartButtons = [...buttons];
+    this.add2CartButtons.forEach(button => button.addEventListener("click", this.add2CartHandler));
   },
 
   onUnload: function() {
     this.swiper.destroy();
+    this.add2CartButtons.forEach(button => button.removeEventListener("click", this.add2CartHandler))
   },
 
   publicMethod() {
