@@ -119,7 +119,7 @@ register("featured-collection", {
         });
     };
 
-    add2CartButtons.forEach(button => {
+    this.add2CartButtons.forEach(button => {
       button.addEventListener("click", this.add2CartHandler);
     });
   },
@@ -127,7 +127,7 @@ register("featured-collection", {
   onUnload: function() {
     // Do something when a section instance is unloaded
     this.swiper.destroy();
-    add2CartButtons.forEach(button => {
+    this.add2CartButtons.forEach(button => {
       button.removeEventListener("click", this.add2CartHandler);
     });
   },
