@@ -7,6 +7,8 @@
  * @namespace featuredCollection
  */
 import {register} from '@shopify/theme-sections';
+import Swiper from 'swiper';
+import 'swiper/swiper-bundle.css';
 
 /**
  * Featured collection constructor
