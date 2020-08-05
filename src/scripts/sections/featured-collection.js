@@ -119,17 +119,12 @@ register("featured-collection", {
         });
     };
 
-    this.add2CartButtons.forEach(button => {
-      button.addEventListener("click", this.add2CartHandler);
-    });
+    this.add2CartButtons.forEach(button => button.addEventListener("click", this.add2CartHandler));
   },
 
   onUnload: function() {
-    // Do something when a section instance is unloaded
     this.swiper.destroy();
-    this.add2CartButtons.forEach(button => {
-      button.removeEventListener("click", this.add2CartHandler);
-    });
+    this.add2CartButtons.forEach(button => button.removeEventListener("click", this.add2CartHandler));
   },
 
   publicMethod() {
