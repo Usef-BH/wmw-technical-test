@@ -58,7 +58,7 @@ register("featured-collection", {
 
     const buttons = document.querySelectorAll("#add-to-cart");
 
-    this.add2CartHandler = function add2CartHandler(event) {
+    this.add2CartHandler = function (event) {
       event.stopPropagation();
       event.preventDefault();
 
@@ -118,7 +118,7 @@ register("featured-collection", {
     };
 
     [...buttons].forEach(button =>
-      button.addEventListener("click", this.add2CartHandler.bind(this))
+      button.addEventListener("click", this.add2CartHandler)
     );
   },
 
