@@ -1,83 +1,365 @@
 {% comment %}
 ------------------------------------------------------------------------------
-  Section: Featured collection
-  - This the main section that you should be working on
-  - Main styling is done in /styles/sections/featured-collection.scss
+Section: Featured collection
+- This the main section that you should be working on
+- Main styling is done in /styles/sections/featured-collection.scss
 ------------------------------------------------------------------------------
 {% endcomment %}
 
-<section
-  class="featured-collection"
-  data-section-id="{{ section.id }}"
-  data-section-type="featured-collection"
->
+<section class="featured-collection" data-section-id="{{ section.id }}" data-section-type="featured-collection">
   {%- assign collection = collections[section.settings.collection] -%}
 
   <div class="container">
     <div class="row">
       <div class="col xs12">
-        <h2>
-          {{ collection.title | escape }}
-        </h2>
 
-        <p>
-          {{ collection.description }}
-        </p>
+        <div class="collection-header">
+          <h2 class="collection-title">
+            {{ collection.title | escape }}
+          </h2>
 
-        {% for product in collection.products limit: 8 %}
-          {% assign current_variant = product.selected_or_first_available_variant %}
+          <p class="collection-desc">
+            {{ collection.description | strip_html }}
+          </p>
+        </div>
 
-          <a class="product-card" href="{{ product.url | within: collection }}">
-            <div>
-              {% if product.featured_image != blank %}
+        <div class="swiper-container">
+          <div class="swiper-wrapper">
+            {% for product in collection.products limit: 8 %}
+            {% assign current_variant = product.selected_or_first_available_variant %}
+
+            <a class="product-card swiper-slide" data-tags="{{product.tags | first }}" href="{{ product.url | within: collection }}">
+              <div class="image-wrapper">
+                {% if product.tags contains 'badge: sale' or product.tags contains 'badge:sale' %}
+                <span class="sale">Sale</span>
+                {% endif %}
+
+                {% if product.featured_image != blank %}
                 {{ product.featured_image | img_url: 'large' | img_tag }}
-              {% endif %}
+                {% endif %}
 
-              <span
-                class="product-card__add-to-cart"
-                data-quantity="1"
-                data-variant-id="{{ current_variant.id }}"
-                js-ajax-cart="addToCart"
-              >
-                Add to cart
-              </span>
-            </div>
+                <button id="add-to-cart" class="add-to-cart" data-variant-id="{{ current_variant.id }}">
+                  <span class="add-to-cart-text">
+                    Add to cart
+                  </span>
+                  <span class="add-to-cart-loader hidden">
+                    <svg height="15" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#003366">
+                      <circle cx="15" cy="15" r="15">
+                        <animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" />
+                        <animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" />
+                      </circle>
+                      <circle cx="60" cy="15" r="9" fill-opacity="0.3">
+                        <animate attributeName="r" from="9" to="9" begin="0s" dur="0.8s" values="9;15;9" calcMode="linear" repeatCount="indefinite" />
+                        <animate attributeName="fill-opacity" from="0.5" to="0.5" begin="0s" dur="0.8s" values=".5;1;.5" calcMode="linear" repeatCount="indefinite" />
+                      </circle>
+                      <circle cx="105" cy="15" r="15">
+                        <animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" />
+                        <animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" />
+                      </circle>
+                    </svg>
+                  </span>
+                </button>
+              </div>
 
-            <div>
-              <p>{{ product.title | escape }}</p>
+              <div class="product-details">
+                <p class="product-title">{{ product.title | escape }}</p>
 
-              <span>
-                {% include 'product-price' %}
-              </span>
-            </div>
-          </a>
-        {% endfor %}
+                <span class="product-price">
+                  {% include 'product-price' %}
+                </span>
+              </div>
+            </a>
+            {% endfor %}
+          </div>
+          <!-- Add Pagination -->
+          <div class="swiper-pagination"></div>
+        </div>
+
+        <a class="collection-link" href="{{collection.url}}">
+          <span class="collection-link-text">View collection</span>
+        </a>
       </div>
     </div>
   </div>
 </section>
 
-{% schema %}
-  {
-    "name": "Featured collection",
-    "settings": [
-      {
-        "type": "text",
-        "id": "title",
-        "label": "Heading",
-        "default": "Featured collection"
-      },
-      {
-        "id": "collection",
-        "type": "collection",
-        "label": "Collection"
-      }
-    ],
-    "presets": [
-      {
-        "name": "Featured collection",
-        "category": "Collection"
-      }
-    ]
+<style>
+  html,
+  body {
+    position: relative;
+    height: 100%;
   }
+
+  body {
+    margin: 0;
+    padding: 0;
+    height: 1500px;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  .collection-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .collection-title {
+    height: 48px;
+    width: 303px;
+    color: #003366;
+    font-family: "Helvetica Neue";
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 49px;
+    text-align: center;
+  }
+
+  .collection-desc {
+    height: 79px;
+    width: 611px;
+    color: #9B9B9B;
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 26px;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  .swiper-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  .swiper-wrapper {
+    padding: 15px 0 50px;
+  }
+
+  .swiper-slide {
+    height: 578px;
+    width: 306px;
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    align-items: center;
+  }
+
+  .swiper-pagination-bullet {
+    height: 7px;
+    width: 7px;
+    background-color: #D1D1D1;
+  }
+
+  .swiper-pagination-bullet-active {
+    height: 7px;
+    width: 7px;
+    background-color: #333333;
+  }
+
+  .product-card {
+    height: auto;
+    width: 306px;
+    display: grid;
+    grid-template-rows: 1fr auto;
+  }
+
+  .product-card:hover .add-to-cart {
+    opacity: 1;
+  }
+
+  .add-to-cart {
+    height: 47px;
+    width: 270px;
+    background-color: #FFFFFF;
+    border: none;
+    position: absolute;
+    bottom: 18px;
+    left: 18px;
+    opacity: 0;
+    transition: all .2s ease-in;
+  }
+
+  .add-to-cart:hover {
+    animation-name: bounce;
+    animation-timing-function: ease-in-out;
+    animation-duration: .5s;
+    animation-iteration-count: infinite;
+    transform-origin: bottom;
+  }
+
+  @keyframes bounce {
+    0% {
+      transform: scale(1);
+    }
+
+    25% {
+      transform: scale(.99);
+    }
+
+    50% {
+      transform: scale(1.01);
+    }
+
+    75% {
+      transform: scale(.99);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .add-to-cart-text {
+    height: 22px;
+    width: 96px;
+    color: #003366;
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 23px;
+    text-align: center;
+  }
+
+  .image-wrapper {
+    position: relative;
+  }
+
+  .product-details {
+    text-align: left;
+  }
+
+  .product-title {
+    height: 50px;
+    width: 306px;
+    color: #003366;
+    font-family: "Helvetica Neue";
+    font-size: 21px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 26px;
+  }
+
+  .product-price {
+    height: 26px;
+    width: 66px;
+    color: #9B9B9B;
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 26px;
+  }
+
+  .sale {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    height: 26px;
+    width: 56px;
+    color: #FFFFFF;
+    background: #003366;
+    font-family: "Helvetica Neue";
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 17px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .collection-link {
+    height: 55px;
+    width: 175px;
+    background-color: #003366;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    text-decoration: none;
+    margin: 35px auto;
+  }
+
+  .collection-link-text {
+    height: 22.5px;
+    width: 146.9px;
+    color: #FFFFFF;
+    font-family: "Helvetica Neue";
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 0;
+    line-height: 23px;
+    text-align: center;
+  }
+
+  @media (max-width: 400px) {
+    .collection-title {
+      height: 33px;
+      width: 212px;
+      color: #003366;
+      font-family: "Helvetica Neue";
+      font-size: 28px;
+      font-weight: bold;
+      letter-spacing: 0;
+      line-height: 34px;
+      text-align: center;
+    }
+
+    .collection-desc {
+      height: 95px;
+      width: 284px;
+      color: #9B9B9B;
+      font-family: "Helvetica Neue";
+      font-size: 14px;
+      font-weight: 300;
+      letter-spacing: 0;
+      line-height: 21px;
+      text-align: center;
+      padding: 0px;
+    }
+
+    .add-to-cart {
+      opacity: 1;
+    }
+  }
+</style>
+
+{% schema %}
+{
+"name": "Featured collection",
+"settings": [
+{
+"type": "text",
+"id": "title",
+"label": "Heading",
+"default": "Featured collection"
+},
+{
+"id": "collection",
+"type": "collection",
+"label": "Collection"
+}
+],
+"presets": [
+{
+"name": "Featured collection",
+"category": "Collection"
+}
+]
+}
 {% endschema %}

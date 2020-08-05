@@ -1,9 +1,10 @@
 {% if product.compare_at_price > product.price %}
   {% if product.price_varies %}
     {%- assign sale_price = product.price | money -%}
-    {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
+    {%- comment -%}{{ 'products.product.on_sale_from_html' | t: price: sale_price }}{%- endcomment -%}
+    {{ product.price | money }}
   {% else %}
-    {{ 'products.product.on_sale' | t }}
+    {%- comment -%}{{ 'products.product.on_sale' | t }}{%- endcomment -%}
     {{ product.price | money }}
   {% endif %}
 {% else %}
