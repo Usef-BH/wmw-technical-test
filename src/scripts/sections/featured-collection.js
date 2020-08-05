@@ -27,30 +27,30 @@ register('featured-collection', {
 new Swiper('.swiper-container', {
   slidesPerView: 4,
   slidesPerGroup: 4,
-  spaceBetween: 30,
+  spaceBetween: 22,
   breakpoints: {
     // when window width is >= 320px
     320: {
       slidesPerView: 1,
       slidesPerGroup: 1,
-      spaceBetween: 10,
+      spaceBetween: 22,
     },
     // when window width is >= 480px
     640: {
       slidesPerView: 2,
       slidesPerGroup: 2,
-      spaceBetween: 20,
+      spaceBetween: 22,
     },
     // when window width is >= 640px
     960: {
       slidesPerView: 3,
       slidesPerGroup: 3,
-      spaceBetween: 40,
+      spaceBetween: 22,
     },
     1280: {
       slidesPerView: 4,
       slidesPerGroup: 4,
-      spaceBetween: 40,
+      spaceBetween: 22,
     },
   },
   pagination: {

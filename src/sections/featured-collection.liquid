@@ -170,9 +170,9 @@ Section: Featured collection
 
   .product-card {
     height: auto;
-    width: 306px;
     display: grid;
     grid-template-rows: 1fr auto;
+    display: block;
   }
 
   .product-card:hover .add-to-cart {
@@ -181,12 +181,13 @@ Section: Featured collection
 
   .add-to-cart {
     height: 47px;
-    width: 270px;
+    width: calc(100% - 36px);
     background-color: #FFFFFF;
     border: none;
     position: absolute;
     bottom: 18px;
     left: 18px;
+    right: 18px;
     opacity: 0;
     transition: all .2s ease-in;
   }
@@ -250,6 +251,7 @@ Section: Featured collection
     font-weight: bold;
     letter-spacing: 0;
     line-height: 26px;
+    margin: 10px 0;
   }
 
   .product-price {
@@ -297,7 +299,6 @@ Section: Featured collection
 
   .collection-link-text {
     height: 22.5px;
-    width: 146.9px;
     color: #FFFFFF;
     font-family: "Helvetica Neue";
     font-size: 18px;
@@ -321,21 +322,62 @@ Section: Featured collection
     }
 
     .collection-desc {
-      height: 95px;
       width: 284px;
+      text-align: center;
+      padding: 0px;
+      height: 72px;
       color: #9B9B9B;
       font-family: "Helvetica Neue";
       font-size: 14px;
       font-weight: 300;
       letter-spacing: 0;
       line-height: 21px;
-      text-align: center;
-      padding: 0px;
     }
 
     .add-to-cart {
+      height: 42px;
+      width: calc(100% - 36px);
+      background-color: #FFFFFF;
+      border: none;
+      position: absolute;
+      bottom: 18px;
+      left: 18px;
+      right: 18px;
       opacity: 1;
     }
+
+    .add-to-cart-text {
+      height: 17px;
+      width: 72px;
+      color: #003366;
+      font-family: "Helvetica Neue";
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 0;
+      line-height: 17px;
+    }
+
+    .collection-link {
+      height: 42px;
+      background-color: #003366;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+      text-decoration: none;
+      margin: 35px auto;
+    }
+
+    .collection-link-text {
+      height: 17px;
+      color: #FFFFFF;
+      font-family: "Helvetica Neue";
+      font-size: 14px;
+      font-weight: bold;
+      letter-spacing: 0;
+      line-height: 17px;
+    }
+
   }
 </style>
 
