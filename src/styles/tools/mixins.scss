@@ -58,9 +58,9 @@
  */
 @mixin clearfix() {
   &::after {
+    clear: both;
     content: '';
     display: table;
-    clear: both;
   }
 
   // stylelint-disable-next-line
@@ -76,15 +76,15 @@
  * }
  */
 @mixin visually-hidden() {
-  // stylelint-disable-next-line
-  position: absolute !important;
-  overflow: hidden;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
   border: 0;
   clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  // stylelint-disable-next-line
+  position: absolute !important;
+  width: 1px;
 }
 
 /**
@@ -99,11 +99,11 @@
  * }
  */
 @mixin visually-shown($position: inherit) {
-  // stylelint-disable-next-line
-  position: $position !important;
-  overflow: auto;
-  width: auto;
+  clip: auto;
   height: auto;
   margin: 0;
-  clip: auto;
+  overflow: auto;
+  // stylelint-disable-next-line
+  position: $position !important;
+  width: auto;
 }

@@ -136,27 +136,8 @@ $ELEMENT_BOTTOM_MARGIN: 1rem !default;
   }
 
   .col {
-    box-sizing: border-box;
-    float: left;
-    min-height: 1px;
-    padding: 0 ($GUTTER_WIDTH / 4);
 
-    @include mq($from: medium) {
-      padding: 0 ($GUTTER_WIDTH / 3);
-    }
-
-    @include mq($from: large) {
-      padding: 0 ($GUTTER_WIDTH / 2);
-    }
-
-    .no-gutter {
-      padding: 0;
-    }
-
-    &[class*=push-],
-    &[class*=pull-] {
-      position: relative;
-    }
+    $i: 1;
 
     $i: 1;
 
@@ -170,15 +151,27 @@ $ELEMENT_BOTTOM_MARGIN: 1rem !default;
       $i: $i + 1;
     }
 
-    $i: 1;
-
     @while $i <= $NUM_COLS {
       $perc: unquote((100 / ($NUM_COLS / $i)) + '%');
       @include grid-classes('xs', $i, $perc);
       $i: $i + 1;
     }
+    box-sizing: border-box;
+    float: left;
+    min-height: 1px;
+    padding: 0 ($GUTTER_WIDTH / 4);
+
+    @include mq($from: medium) {
+      padding: 0 ($GUTTER_WIDTH / 3);
+    }
+
+    @include mq($from: large) {
+      padding: 0 ($GUTTER_WIDTH / 2);
+    }
 
     @include mq($from: small) {
+      $i: 1;
+
       $i: 1;
 
       @while $i <= $NUM_COLS {
@@ -191,8 +184,6 @@ $ELEMENT_BOTTOM_MARGIN: 1rem !default;
         $i: $i + 1;
       }
 
-      $i: 1;
-
       @while $i <= $NUM_COLS {
         $perc: unquote((100 / ($NUM_COLS / $i)) + '%');
         @include grid-classes('s', $i, $perc);
@@ -201,6 +192,8 @@ $ELEMENT_BOTTOM_MARGIN: 1rem !default;
     }
 
     @include mq($from: medium) {
+      $i: 1;
+
       $i: 1;
 
       @while $i <= $NUM_COLS {
@@ -213,8 +206,6 @@ $ELEMENT_BOTTOM_MARGIN: 1rem !default;
         $i: $i + 1;
       }
 
-      $i: 1;
-
       @while $i <= $NUM_COLS {
         $perc: unquote((100 / ($NUM_COLS / $i)) + '%');
         @include grid-classes('m', $i, $perc);
@@ -223,6 +214,8 @@ $ELEMENT_BOTTOM_MARGIN: 1rem !default;
     }
 
     @include mq($from: large) {
+      $i: 1;
+
       $i: 1;
 
       @while $i <= $NUM_COLS {
@@ -235,8 +228,6 @@ $ELEMENT_BOTTOM_MARGIN: 1rem !default;
         $i: $i + 1;
       }
 
-      $i: 1;
-
       @while $i <= $NUM_COLS {
         $perc: unquote((100 / ($NUM_COLS / $i)) + '%');
         @include grid-classes('l', $i, $perc);
@@ -245,6 +236,8 @@ $ELEMENT_BOTTOM_MARGIN: 1rem !default;
     }
 
     @include mq($from:wide) {
+      $i: 1;
+
       $i: 1;
 
       @while $i <= $NUM_COLS {
@@ -257,13 +250,20 @@ $ELEMENT_BOTTOM_MARGIN: 1rem !default;
         $i: $i + 1;
       }
 
-      $i: 1;
-
       @while $i <= $NUM_COLS {
         $perc: unquote((100 / ($NUM_COLS / $i)) + '%');
         @include grid-classes('xl', $i, $perc);
         $i: $i + 1;
       }
+    }
+
+    .no-gutter {
+      padding: 0;
+    }
+
+    &[class*=push-],
+    &[class*=pull-] {
+      position: relative;
     }
   }
 }

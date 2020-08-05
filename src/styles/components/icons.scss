@@ -1,8 +1,8 @@
 .icon {
   display: inline-block;
+  height: 20px;
   vertical-align: middle;
   width: 20px;
-  height: 20px;
   
   path {
     fill: currentColor;
@@ -50,6 +50,6 @@ symbol {
 
 // Payment icons
 .payment-icons {
-  user-select: none;
   cursor: default;
+  user-select: none;
 }
