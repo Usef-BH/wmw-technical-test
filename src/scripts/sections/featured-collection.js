@@ -64,6 +64,8 @@ register("featured-collection", {
       event.stopPropagation();
       event.preventDefault();
 
+      const button = event.target;
+
       const variantId = button.dataset.variantId;
 
       const cartText = button.querySelector(".add-to-cart-text");
