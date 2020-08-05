@@ -29,44 +29,45 @@ Section: Featured collection
             {% assign current_variant = product.selected_or_first_available_variant %}
 
             <a class="product-card swiper-slide" data-tags="{{product.tags | first }}" href="{{ product.url | within: collection }}">
-              <div class="image-wrapper">
-                {% if product.tags contains 'badge: sale' or product.tags contains 'badge:sale' %}
-                <span class="sale">Sale</span>
-                {% endif %}
+              <div class="product-wrapper">
+                <div class="image-wrapper">
+                  {% if product.tags contains 'badge: sale' or product.tags contains 'badge:sale' %}
+                  <span class="sale">Sale</span>
+                  {% endif %}
 
-                {% if product.featured_image != blank %}
-                {{ product.featured_image | img_url: 'large' | img_tag }}
-                {% endif %}
+                  {% if product.featured_image != blank %}
+                  {{ product.featured_image | img_url: 'large' | img_tag }}
+                  {% endif %}
 
-                <button id="add-to-cart" class="add-to-cart" data-variant-id="{{ current_variant.id }}">
-                  <span class="add-to-cart-text">
-                    Add to cart
+                  <button id="add-to-cart" class="add-to-cart" data-variant-id="{{ current_variant.id }}">
+                    <span class="add-to-cart-text">
+                      Add to cart
+                    </span>
+                    <span class="add-to-cart-loader hidden">
+                      <svg height="15" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#003366">
+                        <circle cx="15" cy="15" r="15">
+                          <animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" />
+                          <animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" />
+                        </circle>
+                        <circle cx="60" cy="15" r="9" fill-opacity="0.3">
+                          <animate attributeName="r" from="9" to="9" begin="0s" dur="0.8s" values="9;15;9" calcMode="linear" repeatCount="indefinite" />
+                          <animate attributeName="fill-opacity" from="0.5" to="0.5" begin="0s" dur="0.8s" values=".5;1;.5" calcMode="linear" repeatCount="indefinite" />
+                        </circle>
+                        <circle cx="105" cy="15" r="15">
+                          <animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" />
+                          <animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" />
+                        </circle>
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+                <div class="product-details">
+                  <p class="product-title">{{ product.title | escape }}</p>
+
+                  <span class="product-price">
+                    {% include 'product-price' %}
                   </span>
-                  <span class="add-to-cart-loader hidden">
-                    <svg height="15" viewBox="0 0 120 30" xmlns="http://www.w3.org/2000/svg" fill="#003366">
-                      <circle cx="15" cy="15" r="15">
-                        <animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" />
-                        <animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" />
-                      </circle>
-                      <circle cx="60" cy="15" r="9" fill-opacity="0.3">
-                        <animate attributeName="r" from="9" to="9" begin="0s" dur="0.8s" values="9;15;9" calcMode="linear" repeatCount="indefinite" />
-                        <animate attributeName="fill-opacity" from="0.5" to="0.5" begin="0s" dur="0.8s" values=".5;1;.5" calcMode="linear" repeatCount="indefinite" />
-                      </circle>
-                      <circle cx="105" cy="15" r="15">
-                        <animate attributeName="r" from="15" to="15" begin="0s" dur="0.8s" values="15;9;15" calcMode="linear" repeatCount="indefinite" />
-                        <animate attributeName="fill-opacity" from="1" to="1" begin="0s" dur="0.8s" values="1;.5;1" calcMode="linear" repeatCount="indefinite" />
-                      </circle>
-                    </svg>
-                  </span>
-                </button>
-              </div>
-
-              <div class="product-details">
-                <p class="product-title">{{ product.title | escape }}</p>
-
-                <span class="product-price">
-                  {% include 'product-price' %}
-                </span>
+                </div>
               </div>
             </a>
             {% endfor %}
@@ -234,8 +235,14 @@ Section: Featured collection
     text-align: center;
   }
 
+  .product-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
   .image-wrapper {
     position: relative;
+    display: inline-block;
   }
 
   .product-details {
