@@ -7,8 +7,11 @@
  * @namespace featuredCollection
  */
 import { register } from "@shopify/theme-sections";
-import Swiper from "swiper";
+import Swiper, { Pagination } from 'swiper';
 import "swiper/swiper-bundle.css";
+
+// configure Swiper to use modules
+Swiper.use([Pagination]);
 
 /**
  * Featured collection constructor
