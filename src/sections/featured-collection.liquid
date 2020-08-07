@@ -31,10 +31,11 @@ Section: Featured collection
             <a class="product-card swiper-slide" data-tags="{{product.tags | first }}" href="{{ product.url | within: collection }}">
               <div class="product-wrapper">
                 <div class="image-wrapper">
-                  {% if product.tags contains 'badge: sale' or product.tags contains 'badge:sale' %}
-                  <span class="sale">Sale</span>
-                  {% endif %}
-
+                  {% for tag in product.tags %}
+                    {% if tag contains "badge:" %}
+                      <div class="sale">{{ tag | remove: "badge:" | strip | capitalize}}</div>
+                    {% endif %}
+                  {% endfor %}
                   {% if product.featured_image != blank %}
                   {{ product.featured_image | img_url: 'large' | img_tag }}
                   {% endif %}
